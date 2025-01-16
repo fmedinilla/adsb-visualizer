@@ -1,0 +1,57 @@
+ADSB-VISUALIZER
+    ENCODER: ADS-B message encoder.
+        file:   adsb_encoder.h
+        file:   adsb_encoder.c
+        fn:  ADSBFrame -> RawADSBMessage
+
+    DECODER: ADS-B message decoder.
+        file:   adsb_decoder.h
+        file:   adsb_decoder.c
+        fn:     RawADSBMessage -> ADSBFrame
+        fn:     ADSBFrame -> Position
+        fn:     ADSBFrame -> Velocity
+        fn:     ADSBFrame -> callsign
+        fn:     ADSBFrame -> ICAO
+
+    SHARED: shared items between.
+        type:   Position                struct
+                    latitude
+                    longitude
+                    altitude
+        type:   Velocity                struct
+                    speed
+                    track
+        type:   Byte                    unsigned char
+        type:   RawADSBMessage          byte array
+        type:   StrADSBMessage          char array
+        type:   ADSBFrame               struct
+                    byte 1      DF, 5 bits
+                                CA, 3 bits
+                    byte 2      ICAO, 24 bits
+                    byte 3
+                    byte 4      
+                    byte 5      ME, 56 bits
+                    byte 6
+                    byte 7
+                    byte 8
+                    byte 9
+                    byte 10
+                    byte 11     
+                    byte 12     PI, 24 bits
+                    byte 13
+                    byte 14     
+        type:   Flight                (struct)
+                    Position
+                    Velocity
+                    callsign
+                    ICAO
+        fn:  RawADSBMessage -> StrADSBMessage
+        fn:  StrADSBMessage -> RawADSBMessage
+
+    GENERATOR: Generates flights and ADS-B messages.
+        - Generates X flights.
+
+    VISUALIZER: Show ADS-B messages with a pretty format.
+        - Gets ADS-B message from flights (previously generated).
+        - Decode messages.
+        - Show flight info on screen.
