@@ -13,6 +13,7 @@ Para este proyecto se ha decidido limitar la zona geografica a España, por lo q
 Este proyecto esta desarrollado con C ya que la idea es practicar con este lenguaje de programación.
 
 ## Desarrollo
+Consultar [devlog del proyecto](DEVLOG.md)
 
 ## Instalación
 
