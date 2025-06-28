@@ -19,3 +19,4 @@ Este proyecto esta desarrollado con C ya que la idea es practicar con este lengu
 ## Uso
 
 ## Licencia
+Este proyecto está bajo la licencia [MIT](https://choosealicense.com/licenses/mit/)
