@@ -8,14 +8,17 @@ La idea es documentar el viaje de desarrollo más allá de los resultados finale
 ## 28 de junio de 2025 - Configuración básica del proyecto
 
 **OBJETIVO**
+
 Tener el esqueleto principal para empezar el desarrollo del proyecto.
 
-**OBSERVACIONES:**
+**OBSERVACIONES**
+
 Para ejecutar correctamente make se tiene que usar una consola Unix.
 
 Si se utiliza la consola de windows puede haber fallos dado que los comandos utilizados en el Makefile no son compatibles con windows. Desde windows se puede utilizar GitBash o WSL (o similar).
 
 **RESULTADOS**
+
 - Repositorio de GIT inicializado
 - Fichero README con la descripción del proyecto
 - Fichero LICENCE con la licencia MIT
@@ -24,5 +27,6 @@ Si se utiliza la consola de windows puede haber fallos dado que los comandos uti
 - Esqueleto básico para el generador de datos en el directorio generator/
 
 **PROXIMOS PASOS**
+
 - Estructurar generador de datos
 - Empezar desarrollo del generador de datos
