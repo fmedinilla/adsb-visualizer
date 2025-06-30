@@ -32,6 +32,10 @@ $(BINDIR):
 $(OBJDIR):
 	mkdir -p $@
 
+# Run generator app
+run: $(TARGET)
+	./$(TARGET)
+
 # Clean build files
 clean:
 	rm -rf $(OBJDIR) $(BINDIR)
