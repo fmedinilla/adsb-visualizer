@@ -2,6 +2,7 @@
 
 int main(void)
 {
-    generator_info();
+    generator_start(3);
+
     return 0;
 }
