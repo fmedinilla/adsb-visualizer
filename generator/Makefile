@@ -1,6 +1,6 @@
 # Compiler and flags
 CC = gcc
-CFLAGS = -Wall -Wextra -Iinclude -g
+CFLAGS = -Wall -Wextra -Iinclude -I../shared -g
 
 # Directories
 SRCDIR = src
@@ -11,6 +11,9 @@ OBJDIR = build
 SOURCES = $(wildcard $(SRCDIR)/*.c)
 OBJECTS = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SOURCES))
 
+SHARED_SOURCES = $(wildcard ../shared/*.c)
+SHARED_OBJECTS = $(patsubst ../shared/%.c, $(OBJDIR)/%.o, $(SHARED_SOURCES))
+
 # Target executable
 TARGET = $(BINDIR)/generator
 
@@ -18,11 +21,14 @@ TARGET = $(BINDIR)/generator
 all: $(TARGET)
 
 # Link objects to create executable
-$(TARGET): $(OBJECTS) | $(BINDIR)
+$(TARGET): $(OBJECTS) $(SHARED_OBJECTS) | $(BINDIR)
 	$(CC) $(CFLAGS) $^ -o $@
 
 # Compile source files to objects
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJDIR)/%.o: ../shared/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Create directories if not exist
