@@ -4,9 +4,13 @@
 #include <pthread.h>
 
 typedef struct _flight {
-    int id;
+    int ICAO;
+    char callsign[9];
     double latitude;
     double longitude;
+    int altitude;
+    int speed;
+    double track;
     pthread_t thread;
 } flight_t;
 
