@@ -28,12 +28,16 @@ void generator_start(const int NUM_FLIGHTS)
     flight_t flights[NUM_FLIGHTS];
 
     // create flights with initial data
-    int ids[] = {101, 102, 103};
-    double latitudes[] = {4.5, 41.0, -20.0};
-    double longitudes[] = {-1.0, 3.4 , 1.0};
+    int ICAOS[] = {0xAAA001};
+    double latitudes[] = {37.4455675};
+    double longitudes[] = {-5.9340945};
+    int altitudes[] = {10000};
+    int speeds[] = {300};
+    double tracks[] = {40.6};
+    char *callsigns[] = {"ABCD1001"};
 
     for (int i = 0; i < NUM_FLIGHTS; i++) {
-        flight_create(&flights[i], ids[i], latitudes[i], longitudes[i]);
+        flight_create(&flights[i], ICAOS[i], callsigns[i], latitudes[i], longitudes[i], altitudes[i], speeds[i], tracks[i]);
     }
 
     // create threads for each flight
