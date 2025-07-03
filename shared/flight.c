@@ -3,9 +3,13 @@
 
 void flight_create(flight_t *flight, int id, double latitude, double longitude)
 {
-    flight->id = id;
+    flight->ICAO = ICAO;
+    snprintf(flight->callsign, sizeof(flight->callsign), "%s", callsign);
     flight->latitude = latitude;
     flight->longitude = longitude;
+    flight->altitude = altitude;
+    flight->speed = speed;
+    flight->track = track;
     flight->thread = 0;
 }
 

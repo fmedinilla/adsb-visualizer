@@ -14,7 +14,7 @@ typedef struct _flight {
     pthread_t thread;
 } flight_t;
 
-void flight_create(flight_t *flight, int id, double latitude, double longitude);
+void flight_create(flight_t *flight, int ICAO, const char *callsign, double latitude, double longitude, int altitude, int speed, double track);
 void flight_update_coordinates(flight_t *flight);
 void flight_send_message(const flight_t *flight);
 
