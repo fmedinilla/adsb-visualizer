@@ -9,8 +9,7 @@ void *flight_simulation(void *arg)
 {
     flight_t *flight = (flight_t *)arg;
 
-    int counter = 0;
-    while (counter < 5) {
+    while (1) {
         // update coordinates for simulation
         flight_update_coordinates(flight);
 
@@ -19,9 +18,6 @@ void *flight_simulation(void *arg)
 
         // wait for 100 ms
         usleep(100000);
-
-        // update counter
-        counter++;
     }
     
     return NULL;
