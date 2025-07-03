@@ -5,6 +5,38 @@ El objetivo de este documento es compartir detalles sobre el proceso de desarrol
 
 La idea es documentar el viaje de desarrollo más allá de los resultados finales.
 
+## 03 de julio de 2025 - Trabajando con flight_t
+
+**OBJETIVOS**
+
+Completar el tipo flight_t
+
+**DETALLES TECNICOS**
+
+Queremos que los vuelos (flight_t) tengan: ICAO, callsign, latitude, longitude, altitude, speed, track.
+
+- ICAO: Número identificativo de la aeronave (3 bytes).
+- callsign: Nombre identificativo (8 caracteres) para comunicaciones por radio.
+- latitude: Distancia hacia Norte - Sur [-90 (sur), 90 (norte)]. Valor decimal.
+- longitude: Distancia hacia Este - Oeste [-180 (oeste), 180 (este)]. Valor decimal.
+- altitude: Altura barométrica de la aeronave, medido en pies. Valor entero.
+- speed: Velocidad lineal de la aeroanve, medida en nudos. Valor entero.
+- track: Grado que marca la dirección de la aeronave, con referencia al norte (0º). Valor decimal
+
+**OBSERVACIONES**
+
+La aproximación programada para el recalculo de las coordenadas no está comprobado.
+
+**RESULTADOS**
+
+- Tipo flight_t completo
+- Aproximación del método flight_update_coordinates (a falta de comprobar)
+
+**PROXIMOS PASOS**
+
+- Empezar con la codificación de mensajes ADS-B
+- Agregar la capacidad de poder mandar diferentes tipos de mensaje (identificacion, posicion, etc.)
+
 ## 30 de junio de 2025 - Generador de datos ficticios
 
 **OBJETIVO**
