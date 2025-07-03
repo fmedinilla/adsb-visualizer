@@ -21,5 +21,5 @@ void flight_update_coordinates(flight_t *flight)
 
 void flight_send_message(const flight_t *flight)
 {
-    printf("[F-%d] Has reached new coordinates: (%.2f, %.2f).\n", flight->id, flight->latitude, flight->longitude);
+    printf("[0x%06X] Has reached new coordinates: (%.2f, %.2f).\n", flight->ICAO, flight->latitude, flight->longitude);
 }
