@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "flight.h"
+#include "adsb.h"
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -41,17 +42,34 @@ void flight_update_coordinates(flight_t *flight)
 
 void flight_send_message(flight_t *flight)
 {
+    const unsigned char ID_MESSAGE_TYPE = 0b00100; // Identification message type
+    const unsigned char POSITION_MESSAGE_TYPE = 0b01001; // Position message type
+
+    // Create ADSB frame
+    adsb_frame_t frame;
+    adsb_create_frame(&frame);
+    adsb_set_icao(&frame, flight->ICAO);
+
+    adsb_message_t message;
+   
     switch (flight->message_type)
     {
     case IDENTIFICATION_MESSAGE:
-        printf("[0x%06X] Hi there!\n", flight->ICAO);
+        message.type = ID_MESSAGE_TYPE;
+        message.content = 0;
         flight->message_type = POSITION_MESSAGE;
         break;
     case POSITION_MESSAGE:
-        printf("[0x%06X] Has reached new coordinates: (%.2f, %.2f).\n", flight->ICAO, flight->latitude, flight->longitude);
+        message.type = POSITION_MESSAGE_TYPE;
+        message.content = 0;
         flight->message_type = IDENTIFICATION_MESSAGE;
         break;
     default:
         break;
     }
+
+    adsb_set_message(&frame, message);
+
+    // send message
+    adsb_print_hex(&frame);
 }
