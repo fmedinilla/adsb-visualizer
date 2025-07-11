@@ -5,6 +5,32 @@ El objetivo de este documento es compartir detalles sobre el proceso de desarrol
 
 La idea es documentar el viaje de desarrollo más allá de los resultados finales.
 
+## 11 de julio de 2025 - Primeros pasos en la codificación ADS-B
+
+**OBJETIVOS**
+
+Empezar con la codificación de mensajes ADSB.
+
+**DETALLES TECNICOS**
+Para permitir el envio de distintos tipos de mensaje se crea un enum llamado ***message_type_t***, con dos valores IDENTIFICATION_MESSAGE y POSITION_MESSAGE. Dentro de la estructura ***flight_t*** se agrega un campo nuevo de tipo ***message_type_t***. Al mandar un mensaje se comprueba que ***message_type_t*** hay en el vuelo, se manda el mensaje correspondiente y se cambia el tipo de mensaje que el siguiente mensaje sea diferente.
+
+La estructura de un frame ADSB es la siguiente: DF (5) - CA (3) - ICAO (24) - ME (56) - PI (24), esto significa que DF (Downlink Format) son 5 bits, CA (Transponder Capacity) son 3 bits, ICAO son 24 bits, ME (Message) son 54 bits y PI (Parity) son 24 bits. Esto hace un total de 112 bits (14 bytes).
+
+Para simplificar el proyecto, las aeronaves generadas tendran un DF de 17, lo que significa que son aeronaves civiles y con una capacidad de transponder de 5, lo que significa un nivel 2+ de transponder. Por lo tanto todos los ADSB Frame que se generen en la aplicación empezaran por: 17 - 5 (o en binario 10001 - 101; o en hexadecimal 8D)
+
+Antes de mandar cada mensaje, se creará el frame adsb y posteriormente se enviara un mensaje. Este mensaje será el frame ADSB en hexadecimal (un total de 28 caracteres hexadecimales, que hacen los 14 bytes totales).
+
+**OBSERVACIONES**
+
+
+**RESULTADOS**
+- Se ha creado el tipo ***adsb_frame_t***
+- Se ha creado el tipo ***adsb_message_t***
+- Se ha agregado la capacidad de enviar diferentes tipos de mensajes
+
+**PROXIMOS PASOS**
+- Codificar mensajes del tipo identificacion y agregarlos al frame
+
 ## 03 de julio de 2025 - Trabajando con flight_t
 
 **OBJETIVOS**
