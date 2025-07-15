@@ -1,5 +1,6 @@
-#include <stdio.h>
 #include "adsb.h"
+
+const char *characters = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ##### ###############0123456789######";
 
 int adsb_identificaction_get_charpos(char c)
 {
