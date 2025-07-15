@@ -13,8 +13,12 @@ void *flight_simulation(void *arg)
         // update coordinates for simulation
         flight_update_coordinates(flight);
 
+        // Get message
+        flight_message_t message;
+        flight_get_message(message, flight);
+
         // send message
-        flight_send_message(flight);
+        flight_send_message(message);
 
         // wait for 100 ms
         usleep(100000);
