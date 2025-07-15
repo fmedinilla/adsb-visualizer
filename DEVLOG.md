@@ -5,6 +5,41 @@ El objetivo de este documento es compartir detalles sobre el proceso de desarrol
 
 La idea es documentar el viaje de desarrollo más allá de los resultados finales.
 
+## 15 de julio de 2025 - Codificación frame ADS-B
+
+**OBJETIVOS**
+
+Codificar mensajes de identificación y obtener el frame ADS-B completo de dicho mensaje.
+
+**DETALLES TECNICOS**
+
+Un mensaje (ME) de identificación en ADS-B tiene la siguiente estructura:
+
+| TC,5 | CA,3 | C1,6 | C2,6 | C3,6 | C4,6 | C5,6 | C6,6 | C7,6 | C8,6 |
+
+Donde TC es el Type Code, CA es Aircraft Category, y C* es un caracter del callsign.
+
+Los caracteres son valores decimales que se corresponden a una posición de la siguiente cadena: #ABCDEFGHIJKLMNOPQRSTUVWXYZ##### ###############0123456789######
+
+- A - Z :   1 - 26
+- 0 - 9 :  48 - 57
+- ␣ :  32
+
+Los parametros TC y CA en conjunto dan la información sobre la categoria de turbulencia de la aeronave, para simplificar usaremos siempre TC = 4 y CA = 2. Esto significa que es una aeronave de tipo Medium 1 (7 000 Kg a 34 0000 Kg).
+
+**OBSERVACIONES**
+
+Se ha modificado y limpiado la mayor parte del codigo escrito el ultimo dia, con la finalidad de limpiar y tener una mayor legibilidad del codigo. También, se ha perdido la capacidad de enviar diferentes tipos de mensajes.
+
+**RESULTADOS**
+- Simulación de vuelo independiente de la codificación ADSB.
+- Dos metodos para la codificacion y decodificación del callsign.
+- Metodo para hacer el mensaje ADSB.
+
+**PROXIMOS PASOS**
+- Implementar control de error (PI) para los mensajes.
+- Refactorizar ***flight_get_message***, este metodo no debería saber como se codifica el mensaje.
+
 ## 11 de julio de 2025 - Primeros pasos en la codificación ADS-B
 
 **OBJETIVOS**
@@ -12,6 +47,7 @@ La idea es documentar el viaje de desarrollo más allá de los resultados finale
 Empezar con la codificación de mensajes ADSB.
 
 **DETALLES TECNICOS**
+
 Para permitir el envio de distintos tipos de mensaje se crea un enum llamado ***message_type_t***, con dos valores IDENTIFICATION_MESSAGE y POSITION_MESSAGE. Dentro de la estructura ***flight_t*** se agrega un campo nuevo de tipo ***message_type_t***. Al mandar un mensaje se comprueba que ***message_type_t*** hay en el vuelo, se manda el mensaje correspondiente y se cambia el tipo de mensaje que el siguiente mensaje sea diferente.
 
 La estructura de un frame ADSB es la siguiente: DF (5) - CA (3) - ICAO (24) - ME (56) - PI (24), esto significa que DF (Downlink Format) son 5 bits, CA (Transponder Capacity) son 3 bits, ICAO son 24 bits, ME (Message) son 54 bits y PI (Parity) son 24 bits. Esto hace un total de 112 bits (14 bytes).
