@@ -19,5 +19,8 @@ Consultar [devlog del proyecto](DEVLOG.md)
 
 ## Uso
 
+## Referencias
+- [Web Modo S](https://mode-s.org/1090mhz/)
+
 ## Licencia
 Este proyecto está bajo la licencia [MIT](https://choosealicense.com/licenses/mit/)
