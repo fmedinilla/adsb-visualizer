@@ -40,36 +40,39 @@ void flight_update_coordinates(flight_t *flight)
     flight->longitude += delta_lon;
 }
 
-void flight_send_message(flight_t *flight)
+void flight_get_message(flight_message_t message, flight_t *flight)
 {
-    const unsigned char ID_MESSAGE_TYPE = 0b00100; // Identification message type
-    const unsigned char POSITION_MESSAGE_TYPE = 0b01001; // Position message type
+    // Header
+    message[0] = 0x8D;
+    
+    // ICAO
+    message[1] = (flight->ICAO >> 16) & 0xFF;
+    message[2] = (flight->ICAO >> 8) & 0xFF;
+    message[3] = flight->ICAO & 0xFF;
 
-    // Create ADSB frame
-    adsb_frame_t frame;
-    adsb_create_frame(&frame);
-    adsb_set_icao(&frame, flight->ICAO);
+    // Message
+    message[4] = 0x22;
 
-    adsb_message_t message;
-   
-    switch (flight->message_type)
-    {
-    case IDENTIFICATION_MESSAGE:
-        message.type = ID_MESSAGE_TYPE;
-        message.content = 0;
-        flight->message_type = POSITION_MESSAGE;
-        break;
-    case POSITION_MESSAGE:
-        message.type = POSITION_MESSAGE_TYPE;
-        message.content = 0;
-        flight->message_type = IDENTIFICATION_MESSAGE;
-        break;
-    default:
-        break;
+    for (int i = 0; i < 8; i += 4) {
+        unsigned int v = 0;
+        for (int j = 0; j < 4; ++j) {
+            v |= adsb_identificaction_get_charpos(flight->callsign[i + j]) << (18 - 6 * j);
+        }
+        message[5 + (i / 4) * 3] = (v >> 16) & 0xFF;
+        message[6 + (i / 4) * 3] = (v >> 8) & 0xFF;
+        message[7 + (i / 4) * 3] = v & 0xFF;
     }
 
-    adsb_set_message(&frame, message);
+    // Parity
+    message[11] = 0x00;
+    message[12] = 0x00;
+    message[13] = 0x00;
+}
 
-    // send message
-    adsb_print_hex(&frame);
+void flight_send_message(flight_message_t message)
+{
+    for (int i = 0; i < 14; i++) {
+        printf("%02X ", message[i]);
+    }
+    printf("\n");
 }
