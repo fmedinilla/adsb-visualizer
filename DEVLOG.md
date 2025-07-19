@@ -5,6 +5,32 @@ El objetivo de este documento es compartir detalles sobre el proceso de desarrol
 
 La idea es documentar el viaje de desarrollo más allá de los resultados finales.
 
+## 19 de julio de 2025 - CRC para la paridad del frame ADS-B
+
+**OBJETIVOS**
+
+Implementar el control de errores de los frame ADS-B.
+
+**DETALLES TECNICOS**
+
+Las comunicaciones Mode S (incluyendo ADS-B) utilizan codificación de control de errores CRC. En la página del [mode-s](https://mode-s.org/1090mhz/content/ads-b/8-error-control.html) aparece como hacer este control de errores. Se va a implementar el mismo código que aparece en dicha web.
+
+**OBSERVACIONES**
+
+Se han borrado los metodos ***adsb_identificaction_get_charpos*** y ***adsb_identificaction_get_char*** del fichero adsb.h, ya que estos métodos no deberían ser usados por nadie más que los propios métodos de codificación y decodificación de adsb. La implementación se mantiene en adsb.c para poder ser usados.
+
+**RESULTADOS**
+
+- Diferentes funciones para construir frames ADS-B completos.
+- Refactorización del método ***flight_get_message***, este método ya no sabe como es la codificación ADS-B, simplemente llama a funciones que construyen el mensaje completo.
+- Implementación de CRC para el cálculo de los bytes de paridad del frame ADS-B.
+- Se ha agregado la capacidad de enviar diferentes tipos de mensajes, que se quitó el día 15 de julio de 2025.
+
+**PROXIMOS PASOS**
+
+- Trabajar con la implementación del metodo ***adsb_set_position_me*** para codificar mensajes de la posición de la aeronave.
+- Rediseñar el calculo de nueva posición de la aeronave, el método ***flight_update_coordinates***.
+
 ## 15 de julio de 2025 - Codificación frame ADS-B
 
 **OBJETIVOS**
