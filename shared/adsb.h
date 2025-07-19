@@ -3,9 +3,6 @@
 
 #include "flight.h"
 
-int adsb_identificaction_get_charpos(char c);
-char adsb_identificaction_get_char(int pos);
-
 void adsb_set_df(flight_message_t message, unsigned char df);
 void adsb_set_ca(flight_message_t message, unsigned char ca);
 void adsb_set_icao(flight_message_t message, int icao);
