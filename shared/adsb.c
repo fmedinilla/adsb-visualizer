@@ -1,3 +1,5 @@
+#include <stdint.h>
+#include <string.h>
 #include "adsb.h"
 
 const char *characters = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ##### ###############0123456789######";
@@ -40,9 +42,37 @@ void adsb_set_icao(flight_message_t message, int icao)
 
 void adsb_set_pi(flight_message_t message)
 {
-    message[11] = 0xA0;
-    message[12] = 0xB0;
-    message[13] = 0xC0;
+    // Generator (source: mode-s.org)
+    uint32_t generator = 0x1FFFFA09;
+
+    // Fill PI with 0x00
+    message[11] = 0x00;
+    message[12] = 0x00;
+    message[13] = 0x00;
+
+    // Make a copy of original message to manipulate
+    uint8_t data[14];
+    memcpy(data, message, 14);
+
+    // CRC calculation
+    for (int i = 0; i <= 112-25; i++) {
+        int byte_pos = i / 8;
+        int bit_pos = 7 - (i % 8);
+        if (data[byte_pos] & (1 << bit_pos)) {
+            for (int g = 0; g < 25; g++) {
+                int bx = (i + g) / 8;
+                int bx_bit = 7 - ((i + g) % 8);
+                if (generator & (1 << (24 - g))) {
+                    data[bx] ^= (1 << bx_bit);
+                }
+            }
+        }
+    }
+
+    // Set the PI bits in the message
+    message[11] = data[11];
+    message[12] = data[12];
+    message[13] = data[13];
 }
 
 void adsb_set_identification_me(flight_message_t message, flight_t *flight)
