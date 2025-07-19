@@ -17,6 +17,12 @@ void *flight_simulation(void *arg)
         flight_message_t message;
         flight_get_message(message, flight);
 
+        // Change message type for next iteration
+        if (flight->message_type == IDENTIFICATION_MESSAGE)
+            flight->message_type = POSITION_MESSAGE;
+        else
+            flight->message_type = IDENTIFICATION_MESSAGE;
+
         // send message
         flight_send_message(message);
 
