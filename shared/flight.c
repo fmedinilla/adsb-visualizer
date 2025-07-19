@@ -42,31 +42,34 @@ void flight_update_coordinates(flight_t *flight)
 
 void flight_get_message(flight_message_t message, flight_t *flight)
 {
-    // Header
-    message[0] = 0x8D;
-    
+    // DF (5) - CA (3) - ICAO (24) - ME (56) - PI (24)
+
+    // Downlink Format
+    adsb_set_df(message, 17);
+
+    // Capability
+    adsb_set_ca(message, 5);
+
     // ICAO
-    message[1] = (flight->ICAO >> 16) & 0xFF;
-    message[2] = (flight->ICAO >> 8) & 0xFF;
-    message[3] = flight->ICAO & 0xFF;
+    adsb_set_icao(message, flight->ICAO);
 
     // Message
-    message[4] = 0x22;
-
-    for (int i = 0; i < 8; i += 4) {
-        unsigned int v = 0;
-        for (int j = 0; j < 4; ++j) {
-            v |= adsb_identificaction_get_charpos(flight->callsign[i + j]) << (18 - 6 * j);
-        }
-        message[5 + (i / 4) * 3] = (v >> 16) & 0xFF;
-        message[6 + (i / 4) * 3] = (v >> 8) & 0xFF;
-        message[7 + (i / 4) * 3] = v & 0xFF;
+    switch (flight->message_type)
+    {
+    case IDENTIFICATION_MESSAGE:
+        adsb_set_identification_me(message, flight);
+        break;
+    case POSITION_MESSAGE:
+        // adsb_set_position_me(message, flight);
+        break;
+    default:
+        break;
     }
+    
 
-    // Parity
-    message[11] = 0x00;
-    message[12] = 0x00;
-    message[13] = 0x00;
+    // Parity Information
+    adsb_set_pi(message);
+    
 }
 
 void flight_send_message(flight_message_t message)
