@@ -24,11 +24,11 @@ Necesitamos 4 constantes:
 Aplicamos las fórmulas de cálculo de la nuevas coordenadas:
 
 $$
-\phi_2 = \arcsin\left( \sin(\phi_1) \cdot \cos\left(\frac{d}{R}\right) + \cos(\phi_1) \cdot \sin\left(\frac{d}{R}\right) \cdot \cos(\theta) \right)
+\varphi_2 = \arcsin\left( \sin(\varphi_1) \cdot \cos\left(\frac{d}{R}\right) + \cos(\varphi_1) \cdot \sin\left(\frac{d}{R}\right) \cdot \cos(\theta) \right)
 $$
 
 $$
-\lambda_2 = \lambda_1 + \arctan2\left( \sin(\theta) \cdot \sin\left(\frac{d}{R}\right) \cdot \cos(\phi_1), \cos\left(\frac{d}{R}\right) - \sin(\phi_1) \cdot \sin(\phi_2) \right)
+\lambda_2 = \lambda_1 + \arctan2\left( \sin(\theta) \cdot \sin\left(\frac{d}{R}\right) \cdot \cos(\varphi_1), \cos\left(\frac{d}{R}\right) - \sin(\varphi_1) \cdot \sin(\varphi_2) \right)
 $$
 
 Donde:
