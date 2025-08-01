@@ -69,16 +69,14 @@ void flight_get_message(flight_message_t message, flight_t *flight)
         adsb_set_identification_me(message, flight);
         break;
     case POSITION_MESSAGE:
-        // adsb_set_position_me(message, flight);
+        adsb_set_position_me(message, flight);
         break;
     default:
         break;
     }
     
-
     // Parity Information
     adsb_set_pi(message);
-    
 }
 
 void flight_send_message(flight_message_t message)
