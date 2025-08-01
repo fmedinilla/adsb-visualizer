@@ -5,6 +5,65 @@ El objetivo de este documento es compartir detalles sobre el proceso de desarrol
 
 La idea es documentar el viaje de desarrollo más allá de los resultados finales.
 
+## 01 de agosto de 2025 - Mensaje de la posición de la aeronave
+
+**OBJETIVOS**
+
+Empezar con la implementación de la codificación de los mensajes de posición de la aeronave.
+
+**DETALLES TECNICOS**
+
+Para implementar la logica del método ***flight_update_coordinates*** vamos a dividirlo en seis partes: las constantes de cálculo, la conversión de unidades, los cálculos propiamente dichos, y la actualización de las coordenadas.
+
+Necesitamos 4 constantes:
+- EARTH_RADIUS: es el radio de la tierra en metros.
+- KNOTS_TO_MPS: es el factor para pasar de nudos a metros por segundo.
+- DEG_TO_RAD: es el factor para pasar de grados a radianes.
+- RAD_TO_DEG: es el factor para pasar de radianes a grados.
+
+Aplicamos las fórmulas de cálculo de la nuevas coordenadas:
+
+$$
+\phi_2 = \arcsin\left( \sin(\phi_1) \cdot \cos\left(\frac{d}{R}\right) + \cos(\phi_1) \cdot \sin\left(\frac{d}{R}\right) \cdot \cos(\theta) \right)
+$$
+
+$$
+\lambda_2 = \lambda_1 + \arctan2\left( \sin(\theta) \cdot \sin\left(\frac{d}{R}\right) \cdot \cos(\phi_1), \cos\left(\frac{d}{R}\right) - \sin(\phi_1) \cdot \sin(\phi_2) \right)
+$$
+
+Donde:
+
+- $ \phi_1, \lambda_1 $: latitud y longitud inicial (en radianes)  
+- $ \phi_2, \lambda_2 $: latitud y longitud final (en radianes)  
+- $ \theta $: rumbo (track) en radianes, medido desde el norte hacia el este  
+- $ d $: distancia recorrida en metros  
+- $ R $: radio de la Tierra (≈ 6,371,000 m)
+
+Para la codificación de la posición un mensaje se divide en: TC(5) - SS(2) - SAF(1) - ALT(12) - T(1) - F(1) - LAT_CPR(17) - LON_CPR(17).
+
+Donde: 
+- TC: es el codigo del tipo de mensaje, aqui se indica el tipo del altura que se envia, que puede ser altitud barometrica o altitud GNSS. Por simplificación usaremos la altitud GNSS, es decir, nuestro TC siempre será 20.
+- SS: es el estado de vigilancia, por simplificación, será siempre 0.
+- SAF: es Single antenna flag, por simplificación, será siempre 0.
+- ALT: numero decimal codificado en 12 bits. Es la altura en metros.
+- T: es una bandera del tiempo, será 0 por simplificación.
+- F: Es el formato CPR, puede ser 0 (even) o 1 (odd).
+- LAT_CPR: Es la latitud codificada usando CPR.
+- LON_CPR: Es la longitud codificada usando CPR.
+
+**OBSERVACIONES**
+
+El método ***adsb_set_position_me*** tiene una flag interna que dice si el mensaje es even u odd. Esta flag deberá autocalcularse ya que se deben mandar mensajes intercambiando esta flag (even, odd, even, odd, etc.).
+
+**RESULTADOS**
+
+- Método ***flight_update_coordinates*** con una aproximación real.
+- Método ***adsb_set_position_me*** implementado a falta de la flag is_even.
+
+**PROXIMOS PASOS**
+
+- Agregar el calculo de la flag is_even del método ***adsb_set_position_me***.
+
 ## 19 de julio de 2025 - CRC para la paridad del frame ADS-B
 
 **OBJETIVOS**
