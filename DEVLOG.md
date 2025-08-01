@@ -33,11 +33,11 @@ $$
 
 Donde:
 
-- $ \phi_1, \lambda_1 $: latitud y longitud inicial (en radianes)  
-- $ \phi_2, \lambda_2 $: latitud y longitud final (en radianes)  
-- $ \theta $: rumbo (track) en radianes, medido desde el norte hacia el este  
-- $ d $: distancia recorrida en metros  
-- $ R $: radio de la Tierra (≈ 6,371,000 m)
+- φ₁, λ₁: latitud y longitud inicial (en radianes)  
+- φ₂, λ₂: latitud y longitud final (en radianes)  
+- θ: rumbo (track) en radianes, medido desde el norte hacia el este  
+- d: distancia recorrida en metros  
+- R: radio de la Tierra (≈ 6,371,000 m)
 
 Para la codificación de la posición un mensaje se divide en: TC(5) - SS(2) - SAF(1) - ALT(12) - T(1) - F(1) - LAT_CPR(17) - LON_CPR(17).
 
