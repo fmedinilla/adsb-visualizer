@@ -21,23 +21,32 @@ void flight_create(flight_t *flight, int ICAO, const char *callsign, double lati
 
 void flight_update_coordinates(flight_t *flight)
 {
-    // const double EARTH_RADIUS = 6371000; // in meters
+    // Constants for calculations
+    const double EARTH_RADIUS = 6371000;
+    const double KNOTS_TO_MPS = 0.514444;
     const double DEG_TO_RAD = M_PI / 180.0;
-    const double KNOTS_TO_MPS = 0.514444; // Conversion factor from knots to meters per second
-    const double LATITUDE_TO_METERS = 111320; // Approximate conversion factor for latitude to meters
-    const double LONGITUDE_TO_METERS = 111320 * cos(flight->latitude * DEG_TO_RAD); // Approximate conversion factor for longitude to meters at given latitude
+    const double RAD_TO_DEG = (180.0 / M_PI);
 
-    double velocity = flight->speed * KNOTS_TO_MPS; // Convert knots to m/s
+    // Convert degrees to radians
+    double lat_rad = flight->latitude * DEG_TO_RAD;
+    double lon_rad = flight->longitude * DEG_TO_RAD;
+    double theta = flight->track * DEG_TO_RAD;
 
-    double distance = velocity * 1 * 60; // Distance traveled in 1 s
+    // Calculate distance
+    double speed_mps = flight->speed * KNOTS_TO_MPS;
+    double distance = speed_mps * 1;
 
-    double direction = flight->track * DEG_TO_RAD; // Convert track to radians
-
-    double delta_lat = distance * cos(direction) / LATITUDE_TO_METERS;
-    double delta_lon = distance * sin(direction) / LONGITUDE_TO_METERS;
-
-    flight->latitude += delta_lat;
-    flight->longitude += delta_lon;
+    // Calculate new latitude
+    double new_lat = asin(sin(lat_rad) * cos(distance / EARTH_RADIUS) +
+                          cos(lat_rad) * sin(distance / EARTH_RADIUS) * cos(theta));
+    
+    // Calculate new longitude
+    double new_lon = lon_rad + atan2(sin(theta) * sin(distance / EARTH_RADIUS) * cos(lat_rad),
+                                      cos(distance / EARTH_RADIUS) - sin(lat_rad) * sin(new_lat));
+    
+    // Update flight coordinates
+    flight->latitude = new_lat * RAD_TO_DEG;
+    flight->longitude = new_lon * RAD_TO_DEG;
 }
 
 void flight_get_message(flight_message_t message, flight_t *flight)
