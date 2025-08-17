@@ -83,7 +83,7 @@ void flight_get_message(flight_message_t message, flight_t *flight)
 void flight_send_message(flight_message_t message)
 {
     for (int i = 0; i < 14; i++) {
-        printf("%02X ", message[i]);
+        printf("%02X", message[i]);
     }
     printf("\n");
 }
