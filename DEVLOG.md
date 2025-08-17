@@ -5,6 +5,29 @@ El objetivo de este documento es compartir detalles sobre el proceso de desarrol
 
 La idea es documentar el viaje de desarrollo más allá de los resultados finales.
 
+## 17 de agosto de 2025 - Mensajes pares e impares
+
+**OBJETIVOS**
+
+Implementar los mensajes pares e impares para la posición de la aeronave.
+
+**DETALLES TECNICOS**
+
+Para implementar la mecanica para que se pueda mandar dos tipos de menajes (odd y even) se ha optado por guardar el estado del ultimo mensaje enviado por la aeronave. Este campo se actualiza cuando se crea un mensaje para que el siguiente sea odd o even segun corresponda.
+
+**OBSERVACIONES**
+
+Se ha modificado el metodo ***flight_create*** para inicializar el valor del campo *last_message_even* en 0 (es decir, el primer mensaje no es even).
+
+**RESULTADOS**
+
+- Método ***adsb_set_position_me*** terminado con el calculo de mensajes odd y even.
+- Tipo ***flight_t*** con un nuevo campo para guardar la paridad del ultimo mensaje.
+
+**PROXIMOS PASOS**
+
+- Leer desde un fichero de texto las configuraciones de las aeronaves que se van a generar.
+
 ## 01 de agosto de 2025 - Mensaje de la posición de la aeronave
 
 **OBJETIVOS**
