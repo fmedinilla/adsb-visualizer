@@ -2,6 +2,7 @@
 #define FLIGHT_H
 
 #include <pthread.h>
+#include <stdint.h>
 
 typedef enum {
     IDENTIFICATION_MESSAGE,
@@ -18,6 +19,7 @@ typedef struct _flight {
     double track;
     pthread_t thread;
     message_type_t message_type;
+    uint8_t last_message_even;
 } flight_t;
 
 typedef unsigned char flight_message_t[14];

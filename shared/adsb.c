@@ -137,7 +137,8 @@ void adsb_set_position_me(flight_message_t message, flight_t *flight)
 {
     // TC(5) - SS(2) - SAF(1) - ALT(12) - T(1) - F(1) - LAT_CPR(17) - LON_CPR(17)
 
-    uint8_t is_even = 0;
+    uint8_t is_even = flight->last_message_even ? 0 : 1;
+    flight->last_message_even = !flight->last_message_even;
 
     int lat_cpr = compute_lat_cpr(flight->latitude, is_even);
     int lon_cpr = compute_lon_cpr(flight->longitude, flight->latitude, is_even);
