@@ -2,6 +2,6 @@
 
 int main(void)
 {
-    generator_start(1);
+    generator_start();
     return 0;
 }

@@ -1,6 +1,6 @@
 #ifndef GENERATOR_H
 #define GENERATOR_H
 
-void generator_start(const int NUM_FLIGHTS);
+void generator_start();
 
 #endif // GENERATOR_H

@@ -5,6 +5,16 @@
 #include "generator.h"
 #include "flight.h"
 
+typedef struct _flight_data {
+    int ICAO;
+    double lat;
+    double lon;
+    int alt;
+    int speed;
+    double track;
+    char callsign[9];
+} flight_data_t;
+
 void *flight_simulation(void *arg)
 {
     flight_t *flight = (flight_t *)arg;
@@ -33,22 +43,58 @@ void *flight_simulation(void *arg)
     return NULL;
 }
 
-void generator_start(const int NUM_FLIGHTS)
+int read_ini_data(flight_data_t **flight_data)
 {
+    FILE *file = fopen("ini_flights.txt", "r");
+
+    if (!file) {
+        printf("Error: Could not open ini_flights.txt\n");
+        return 0;
+    }
+
+    int num = 1;
+    fscanf(file, "%d", &num);
+
+    *flight_data = realloc(*flight_data, num * sizeof(flight_data_t));
+
+    for (int i = 0; i < num; i++) {
+        fscanf(file, "%d %lf %lf %d %d %lf %s",
+            &(*flight_data)[i].ICAO,
+            &(*flight_data)[i].lat,
+            &(*flight_data)[i].lon,
+            &(*flight_data)[i].alt,
+            &(*flight_data)[i].speed,
+            &(*flight_data)[i].track,
+            (*flight_data)[i].callsign
+        );
+
+        (*flight_data)[i].callsign[8] = '\0';
+    }
+
+    fclose(file);
+    return num;  // Return the number of flights read
+}
+
+void generator_start()
+{
+    flight_data_t *flight_data = malloc(sizeof(flight_data_t));
+    const int NUM_FLIGHTS = read_ini_data(&flight_data);
+
     flight_t flights[NUM_FLIGHTS];
 
-    // create flights with initial data
-    int ICAOS[] = {0xAAA001};
-    double latitudes[] = {37.4455675};
-    double longitudes[] = {-5.9340945};
-    int altitudes[] = {10000};
-    int speeds[] = {300};
-    double tracks[] = {40.6};
-    char *callsigns[] = {"ABCD1001"};
-
     for (int i = 0; i < NUM_FLIGHTS; i++) {
-        flight_create(&flights[i], ICAOS[i], callsigns[i], latitudes[i], longitudes[i], altitudes[i], speeds[i], tracks[i]);
+        flight_create(&flights[i],
+            flight_data[i].ICAO,
+            flight_data[i].callsign,
+            flight_data[i].lat,
+            flight_data[i].lon,
+            flight_data[i].alt,
+            flight_data[i].speed,
+            flight_data[i].track
+        );
     }
+
+    free(flight_data);
 
     // create threads for each flight
     for (int i = 0; i < NUM_FLIGHTS; i++) {

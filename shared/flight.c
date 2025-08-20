@@ -17,6 +17,7 @@ void flight_create(flight_t *flight, int ICAO, const char *callsign, double lati
     flight->speed = speed;
     flight->track = track;
     flight->thread = 0;
+    flight->message_type = IDENTIFICATION_MESSAGE;
     flight->last_message_even = 0;
 }
 
