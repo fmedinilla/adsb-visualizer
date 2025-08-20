@@ -5,6 +5,28 @@ El objetivo de este documento es compartir detalles sobre el proceso de desarrol
 
 La idea es documentar el viaje de desarrollo más allá de los resultados finales.
 
+## 20 de agosto de 2025 - Configuración de las aeronaves por fichero
+
+**OBJETIVOS**
+
+Implementar la configuración inicial de las aeronaves que se van a generar mediante un fichero de texto.
+
+**DETALLES TECNICOS**
+
+Se crea una estructura auxiliar llamada ***flight_data_t*** para guardar los datos minimos necesarios (leidos desde el fichero) para la creación de los vuelos. 
+
+**OBSERVACIONES**
+
+Se ha agregado en el método ***flight_create*** una linea para que el primer mensaje que se genere sea de tipo identificación ya que se ha visto que el primer mensaje que se generaba no teneia ningun cuerpo de mensaje.
+
+**RESULTADOS**
+
+- Metodo ***read_ini_data*** para leer el numero de aeronaves que se generan y los datos de estos.
+
+**PROXIMOS PASOS**
+
+- Enviar y recibir los mensajes del generador a la consola
+
 ## 17 de agosto de 2025 - Mensajes pares e impares
 
 **OBJETIVOS**
