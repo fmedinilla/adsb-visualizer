@@ -5,6 +5,34 @@ El objetivo de este documento es compartir detalles sobre el proceso de desarrol
 
 La idea es documentar el viaje de desarrollo más allá de los resultados finales.
 
+## 23 de agosto de 2025 - Implementando cola de envio de mensajes
+
+**OBJETIVOS**
+
+Tener una cola de mensajes protegida
+
+**DETALELS TECNICOS**
+
+Vamos a construir una estructura para gestionar la cola de mensajes. Ésta se protegerá con mutex para que cada hilo (aeronave) pueda poner en la cola un mensaje y asegurar la integridad del mismo.
+
+Se necesita una cola global (con aceso protegido), luego dos metodos uno para poner un mensaje a la cola y otro para leer un mensaje de la cola.
+
+Con un hilo emisor, se leera mensaje por mensaje de la cola y se enviará a la consola de visualización.
+
+**OBSERVACIONES**
+
+Se realiza un refactor profundo.
+
+**RESULTADOS**
+
+- Cola de mensajess de acceso protegido
+- Hilo emisor
+
+**PROXIMOS PASOS**
+
+- Crear servidor TCP (en consola)
+- Enviar datos desde el generador a la consola (TCP)
+
 ## 20 de agosto de 2025 - Configuración de las aeronaves por fichero
 
 **OBJETIVOS**
