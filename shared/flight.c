@@ -1,11 +1,42 @@
 #include <stdio.h>
 #include <math.h>
+#include <unistd.h>
 #include "flight.h"
 #include "adsb.h"
+#include "message_queue.h"
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
+
+void *flight_simulation(void *arg)
+{
+    flight_t *flight = (flight_t *)arg;
+
+    while (1) {
+        // update coordinates for simulation
+        flight_update_coordinates(flight);
+
+        // Get message
+        flight_message_t message;
+        flight_get_message(message, flight);
+
+        // Change message type for next iteration
+        if (flight->message_type == IDENTIFICATION_MESSAGE)
+            flight->message_type = POSITION_MESSAGE;
+        else
+            flight->message_type = IDENTIFICATION_MESSAGE;
+
+        // send message
+        enqueue_message(&message_queue, &message);
+        //flight_send_message(message);
+
+        // wait for 100 ms
+        usleep(100000);
+    }
+    
+    return NULL;
+}
 
 void flight_create(flight_t *flight, int ICAO, const char *callsign, double latitude, double longitude, int altitude, int speed, double track)
 {
