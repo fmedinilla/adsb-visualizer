@@ -5,6 +5,28 @@ El objetivo de este documento es compartir detalles sobre el proceso de desarrol
 
 La idea es documentar el viaje de desarrollo más allá de los resultados finales.
 
+## 30 de agosto de 2025 - Servidor TCP (consola de visualizacion)
+
+**OBJETIVOS**
+
+Implementar un servidor TCP para la consola de visualización.
+
+**DETALLES TECNICOS**
+
+N/A
+
+**OBSERVACIONES**
+
+Se hace un esquema basico de un servidor TCP
+
+**RESULTADOS**
+
+N/A
+
+**PROXIMOS PASOS**
+
+Seguir con la implementación del servidor TCP.
+
 ## 23 de agosto de 2025 - Implementando cola de envio de mensajes
 
 **OBJETIVOS**
