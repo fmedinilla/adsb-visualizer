@@ -22,7 +22,7 @@ all: $(TARGET)
 
 # Link objects to create executable
 $(TARGET): $(OBJECTS) | $(BINDIR)
-	$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $(CFLAGS) $^ -o $@ -lws2_32
 
 # Compile source files to objects
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
